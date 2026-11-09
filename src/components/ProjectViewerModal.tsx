@@ -26,9 +26,9 @@ export function ProjectViewerModal({ project, onClose, onStartSimilarProject }: 
       aria-modal="true"
       aria-labelledby="viewer-title"
     >
-      <div className="relative w-full max-w-5xl bg-[#07092E] border border-[#DAE0E5]/20 rounded-xl shadow-2xl overflow-hidden my-6 max-h-[94vh] flex flex-col">
+      <div className="relative w-full max-w-5xl bg-[#050625] border border-[#DAE0E5]/20 rounded-xl shadow-2xl overflow-hidden my-6 max-h-[94vh] flex flex-col">
         {/* Modal Top Bar */}
-        <div className="px-6 py-4 bg-[#090C3B] border-b border-[#DAE0E5]/15 flex items-center justify-between gap-4 shrink-0">
+        <div className="px-6 py-4 bg-[#060824] border-b border-[#DAE0E5]/15 flex items-center justify-between gap-4 shrink-0">
           <div className="flex items-center gap-3">
             <span className="text-xs font-mono font-bold text-[#297EE9] uppercase tracking-wider">
               Project {project.number}
@@ -127,38 +127,45 @@ export function ProjectViewerModal({ project, onClose, onStartSimilarProject }: 
             </div>
 
             {/* Right: Quantified Outcomes */}
+            {/* Right: Authentic Scope & Verification Note */}
             <div className="p-6 rounded-lg bg-[#050625] border border-[#DAE0E5]/10 flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[#297EE9] mb-3">
                   <Sparkles className="w-4 h-4" />
-                  <span>Key Commercial Results</span>
+                  <span>Project Overview & Context</span>
                 </div>
                 <div className="space-y-4 mb-6">
-                  {project.metrics.map((metric, mIdx) => (
-                    <div key={mIdx} className="flex items-center gap-3">
-                      <div className="w-6 h-6 rounded-full bg-[#297EE9]/20 border border-[#297EE9] flex items-center justify-center shrink-0">
-                        <Check className="w-3.5 h-3.5 text-[#297EE9]" />
-                      </div>
-                      <span className="text-sm font-semibold text-[#F9F6FF] font-mono">
-                        {metric}
-                      </span>
-                    </div>
-                  ))}
+                  <p className="text-sm font-semibold text-[#F9F6FF] leading-snug">
+                    {project.introduction}
+                  </p>
+                  <div className="p-3.5 rounded bg-[#03041a] border border-[#DAE0E5]/15 text-xs text-[#DAE0E5]/80 font-sans leading-relaxed">
+                    <strong className="text-[#297EE9] font-mono uppercase text-[10px] block mb-1">
+                      Project Disclosure
+                    </strong>
+                    {project.note}
+                  </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-[#DAE0E5]/10 flex items-center justify-between">
-                <span className="text-xs font-mono text-[#DAE0E5]/60">
-                  Ready for this level of polish?
-                </span>
+              <div className="pt-4 border-t border-[#DAE0E5]/10 flex flex-wrap items-center justify-between gap-3">
+                <a
+                  href={project.liveUrlMock}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 rounded border border-[#297EE9] text-[#297EE9] hover:bg-[#297EE9]/15 text-xs font-mono uppercase tracking-wider transition-colors inline-flex items-center gap-1.5"
+                >
+                  <span>Visit live project</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+
                 <button
                   onClick={() => {
                     onClose();
                     onStartSimilarProject(project.id === 'alphasonic' ? 'business' : project.id === 'edubonke' ? 'showcase' : 'bookings');
                   }}
-                  className="px-4 py-2 rounded-full bg-[#297EE9] text-[#F9F6FF] text-xs font-semibold uppercase tracking-wider hover:bg-[#1E6CD4] transition-colors flex items-center gap-1.5 cursor-pointer"
+                  className="px-4 py-2 rounded bg-[#297EE9] text-[#F9F6FF] text-xs font-semibold uppercase tracking-wider hover:bg-[#1E6CD4] transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
-                  <span>Build something like this</span>
+                  <span>Discuss something similar</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
                 </button>
               </div>

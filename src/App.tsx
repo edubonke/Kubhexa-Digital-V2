@@ -21,6 +21,7 @@ export default function App() {
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [preselectedPackageId, setPreselectedPackageId] = useState<string | undefined>('start');
   const [selectedViewerProject, setSelectedViewerProject] = useState<ProjectItem | null>(null);
+  const [attachedEstimate, setAttachedEstimate] = useState<{ summary: string; budget: string } | null>(null);
 
   const handleOpenProjectModal = (packageId?: string) => {
     setPreselectedPackageId(packageId || 'start');
@@ -30,6 +31,10 @@ export default function App() {
   const handleSelectPackage = (pkg: PackageTier) => {
     setPreselectedPackageId(pkg.id);
     setIsProjectModalOpen(true);
+  };
+
+  const handleRequestEstimate = (summary: string, budget: string) => {
+    setAttachedEstimate({ summary, budget });
   };
 
   const handleOpenProjectViewer = (project: ProjectItem) => {
@@ -51,21 +56,28 @@ export default function App() {
         {/* 4. Selected Work */}
         <SelectedWork onOpenProjectViewer={handleOpenProjectViewer} />
 
-        {/* 5. Interface Concepts */}
+        {/* 5. Interface Concepts & Experience Lab */}
         <InterfaceConcepts onOpenProjectModal={handleOpenProjectModal} />
 
         {/* 6. Services */}
         <ServicesAccordion onOpenProjectModal={handleOpenProjectModal} />
 
-        {/* 7. Website Packages */}
-        <WebsitePackages onSelectPackage={handleSelectPackage} />
+        {/* 7. Website Packages & Estimator */}
+        <WebsitePackages
+          onSelectPackage={handleSelectPackage}
+          onRequestEstimate={handleRequestEstimate}
+        />
 
-        {/* 8. Process / How it works */}
+        {/* 8. Process & Studio */}
         <ProcessStrip />
       </main>
 
-      {/* 9. Closing CTA and Footer */}
-      <ClosingCtaFooter onOpenProjectModal={handleOpenProjectModal} />
+      {/* 9. Contact Enquiry Form, FAQs and Closing Footer */}
+      <ClosingCtaFooter
+        onOpenProjectModal={handleOpenProjectModal}
+        attachedEstimateSummary={attachedEstimate?.summary}
+        attachedBudget={attachedEstimate?.budget}
+      />
 
       {/* Interactive Project Inquiry Modal */}
       <ProjectModal

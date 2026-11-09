@@ -83,7 +83,7 @@ export function ProjectModal({ isOpen, onClose, preselectedPackageId }: ProjectM
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      <div className="relative w-full max-w-2xl bg-[#07092E] border border-[#DAE0E5]/20 rounded-xl shadow-2xl p-6 sm:p-8 my-8 text-left max-h-[92vh] overflow-y-auto">
+      <div className="relative w-full max-w-2xl bg-[#050625] border border-[#DAE0E5]/20 rounded-xl shadow-2xl p-6 sm:p-8 my-8 text-left max-h-[92vh] overflow-y-auto">
         {/* Close Button */}
         <button
           onClick={onClose}

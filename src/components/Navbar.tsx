@@ -22,8 +22,9 @@ export function Navbar({ onOpenProjectModal }: NavbarProps) {
     { name: 'Work', href: '#work' },
     { name: 'Services', href: '#services' },
     { name: 'Packages', href: '#packages' },
-    { name: 'Concepts', href: '#concepts' },
-    { name: 'Process', href: '#process' },
+    { name: 'Templates', href: '#templates' },
+    { name: 'Approach', href: '#approach' },
+    { name: 'Studio', href: '#studio' }
   ];
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {

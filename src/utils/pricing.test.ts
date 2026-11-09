@@ -1,19 +1,20 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { WEBSITE_PACKAGES, formatZAR, calculateCustomQuote, validateProjectInquiry } from './pricing';
+import { WEBSITE_PACKAGES, CARE_PLANS, TEMPLATE_CATALOG, estimateWebsite, packageEnquiry, calculateCustomQuote, validateProjectInquiry } from './pricing';
 
-test('WEBSITE_PACKAGES includes the 5 specified tiers with correct pricing', () => {
+test('WEBSITE_PACKAGES includes the 5 specified tiers with authentic pricing and scope', () => {
   assert.equal(WEBSITE_PACKAGES.length, 5);
   
   const startTier = WEBSITE_PACKAGES.find(p => p.id === 'start');
   assert.ok(startTier);
   assert.equal(startTier.price, 2990);
   assert.equal(startTier.priceFormatted, 'R2,990');
-  assert.equal(startTier.recommended, true);
+  assert.equal(startTier.scope, '1-page responsive layout');
 
   const businessTier = WEBSITE_PACKAGES.find(p => p.id === 'business');
   assert.ok(businessTier);
   assert.equal(businessTier.price, 5990);
+  assert.equal(businessTier.recommended, true);
 
   const showcaseTier = WEBSITE_PACKAGES.find(p => p.id === 'showcase');
   assert.ok(showcaseTier);
@@ -28,12 +29,37 @@ test('WEBSITE_PACKAGES includes the 5 specified tiers with correct pricing', () 
   assert.equal(shopTier.price, 17990);
 });
 
-test('calculateCustomQuote calculates base and addon totals accurately', () => {
-  const quote = calculateCustomQuote('start', { expedited: true, copywriting: true });
-  assert.equal(quote.basePrice, 2990);
-  assert.equal(quote.addOnsTotal, 2700);
-  assert.equal(quote.totalPrice, 5690);
-  assert.equal(quote.deliveryDays, '2–3 days express');
+test('CARE_PLANS and TEMPLATE_CATALOG match Kubhexa specifications', () => {
+  assert.equal(CARE_PLANS.length, 3);
+  assert.equal(TEMPLATE_CATALOG.length, 6);
+  assert.ok(CARE_PLANS.some(c => c.id === 'essential' && c.price === 349));
+  assert.ok(CARE_PLANS.some(c => c.id === 'business' && c.price === 749));
+  assert.ok(CARE_PLANS.some(c => c.id === 'commerce' && c.price === 1499));
+});
+
+test('estimateWebsite calculates onceOff, monthly care, and first-year fees', () => {
+  const estimate = estimateWebsite({
+    packageId: 'business',
+    careId: 'essential',
+    extraPages: 2,
+    copywriting: true
+  });
+
+  assert.equal(estimate.plan.price, 5990);
+  // extraPages: 2 * 750 = 1500; copywriting: 2000 => addOnTotal = 3500
+  assert.equal(estimate.addOnTotal, 3500);
+  assert.equal(estimate.onceOff, 5990 + 3500); // 9490
+  assert.equal(estimate.monthly, 349);
+  assert.equal(estimate.firstYearFees, 9490 + 349 * 12); // 13678
+
+  const inquiry = packageEnquiry({
+    packageId: 'business',
+    careId: 'essential',
+    extraPages: 2,
+    copywriting: true
+  });
+  assert.ok(inquiry.summary.includes('Kubhexa Business'));
+  assert.equal(inquiry.budget, 'Under R15,000');
 });
 
 test('validateProjectInquiry catches missing or invalid data', () => {
@@ -55,3 +81,4 @@ test('validateProjectInquiry catches missing or invalid data', () => {
   assert.equal(validResult.isValid, true);
   assert.equal(Object.keys(validResult.errors).length, 0);
 });
+
